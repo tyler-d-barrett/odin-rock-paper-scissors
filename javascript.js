@@ -11,49 +11,50 @@ function getComputerChoice() {
 };
 
 function playRound(playerSelection, computerSelection) {
-    let lowercasePlayerSelection = playerSelection.toLowerCase();
-    let lowercaseComputerSelection = computerSelection.toLowerCase();
+    const playerChoice = document.querySelector('.playerChoice')
+    const computerChoice = document.querySelector('.computerChoice')
+    const result = document.querySelector('.result')
 
-    if (lowercaseComputerSelection == lowercasePlayerSelection) {
-        console.log(`Tie! You both chose ${playerSelection}!`);
-        return 0;
-    } else if ((lowercasePlayerSelection == "rock" && lowercaseComputerSelection == "paper")
-        || (lowercasePlayerSelection == "paper" && lowercaseComputerSelection == "scissors")
-        || (lowercasePlayerSelection == "scissors" && lowercaseComputerSelection == "rock")) {
-        console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
-        return 1;
+    playerChoice.textContent = playerSelection
+    computerChoice.textContent = computerSelection
+
+    if (computerSelection == playerSelection) {
+        result.textContent = `Tie! You both chose ${playerSelection}!`;
+    } else if ((playerSelection == "Rock" && computerSelection == "Paper")
+        || (playerSelection == "Paper" && computerSelection == "Scissors")
+        || (playerSelection == "Scissors" && ComputerSelection == "Rock")) {
+            result.textContent = `You lose! ${computerSelection} beats ${playerSelection}`
+        computerScore++;
     } else {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
-        return 2;
+        result.textContent = `You win! ${playerSelection} beats ${computerSelection}`
+        playerScore++;
     }
-
 }
 
-function game() {
-    let computerSelection;
-    let result;
-    let playerScore = 0;
-    let computerScore = 0;
+let playerScore = 0, computerScore = 0;
 
-    for (let i = 0; i < 5; i++) {
-        computerSelection = getComputerChoice();
-        result = playRound(playerSelection, computerSelection);
-        switch (result) {
-            case 1:
-                computerScore++;
-                break;
-            case 2:
-                playerScore++;
-                break;
-            default:
-                break;
-        };
-    };
+const buttons = document.querySelectorAll('button');
+console.log(buttons)
 
-    console.log(`Player score: ${playerScore}`);
-    console.log(`Computer score: ${computerScore}`);
-}
+// we use the .forEach method to iterate through each button
+buttons.forEach((button) => {
 
-let playerSelection = prompt("Choose between Rock, Papers, or Scissors:");
+  // and for each one we add a 'click' listener
+  button.addEventListener('click', () => {
+    let playerSelection = button.className;
+    let computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection);
 
-game();
+    const pScore = document.querySelector('.playerScore')
+    pScore.textContent = playerScore;
+
+    const cScore = document.querySelector('.computerScore')
+    cScore.textContent = computerScore;
+
+    if (playerScore == 5)
+        alert('Player wins!')
+    
+    if (computerScore == 5)
+        alert('Computer wins!')
+  });
+});
